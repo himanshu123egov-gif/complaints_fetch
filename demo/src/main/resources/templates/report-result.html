@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Report Result</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .error {
+            color: red;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .styled-table th,
+        .styled-table td {
+            border: 1px solid #dddddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .styled-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .styled-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+    </style>
+
+</head>
+<body>
+
+<h2>Complaint Results</h2>
+
+<div th:if="${error}">
+    <p class="error" th:text="${error}"></p>
+</div>
+
+<table th:if="${complaints}" class="styled-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Complaint No</th>
+        <th>Year</th>
+        <th>Received Date</th>
+        <th>Complainant</th>
+        <th>Against</th>
+        <th>Subject</th>
+        <th>Table No</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="c : ${complaints}">
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.complaintNumber}"></td>
+        <td th:text="${c.complaintYear}"></td>
+        <td th:text="${c.receivedDate}"></td>
+        <td th:text="${c.complainantName}"></td>
+        <td th:text="${c.againstPartyName}"></td>
+        <td th:text="${c.subject}"></td>
+        <td th:text="${c.tableNo}"></td>
+    </tr>
+    </tbody>
+
+</table>
+
+<a href="/reports/" class="back">Back</a>
+
+</body>
+</html>

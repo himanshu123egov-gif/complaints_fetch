@@ -5,12 +5,14 @@ import com.example.demo.services.ReportService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@RestController   // <-- IMPORTANT: You forgot this annotation earlier
-@RequestMapping("/api/reports")
+@Controller
+@RequestMapping("/reports")
 public class ReportController {
 
     private final ReportService reportService;
@@ -19,22 +21,40 @@ public class ReportController {
         this.reportService = reportService;
     }
 
-    @GetMapping("/complaint")
-    public ResponseEntity<Object> getByComplaintNumber(@RequestParam String complaintNumber) {
-        Optional<Complaint> c = reportService.findByComplaintNumber(complaintNumber);
-
-        if (c.isPresent()) return ResponseEntity.ok(c.get());
-        return ResponseEntity.status(404).body("Complaint not found");
+    // Showing search page (form)
+    @GetMapping("/")
+    public String home() {
+        return "report-home";
     }
 
+    // Search by Complaint Number
+    @GetMapping("/complaint")
+    public String getByComplaintNumber(@RequestParam String complaintNumber, Model model) {
 
+        Optional<Complaint> c = reportService.findByComplaintNumber(complaintNumber);
+
+        if (c.isEmpty()) {
+            model.addAttribute("error", "Complaint not found!");
+            return "report-result";
+        }
+
+        model.addAttribute("complaints", java.util.List.of(c.get()));
+        return "report-result";
+    }
+
+    // Search by Table Number
     @GetMapping("/table/{tableNo}")
-    public ResponseEntity<Page<Complaint>> getByTableNo(
+    public String getByTableNo(
             @PathVariable Integer tableNo,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
+            @RequestParam(defaultValue = "20") int size,
+            Model model) {
 
         Page<Complaint> result = reportService.findByTableNo(tableNo, PageRequest.of(page, size));
-        return ResponseEntity.ok(result);
+
+        model.addAttribute("complaints", result.getContent());
+        model.addAttribute("page", result);
+
+        return "report-result";
     }
 }

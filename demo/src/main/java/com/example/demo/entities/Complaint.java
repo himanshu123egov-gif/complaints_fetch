@@ -29,10 +29,14 @@ public class Complaint {
     private LocalDate receivedDate;
     private LocalDate complaintDate;
     private String section;
+
+    @Column(name = "table_no")
     private Integer tableNo;
+
     private String complainantName;
     private String againstPartyName;
     private String subject;
+
     @Column(columnDefinition="TEXT")
     private String remarks;
     private LocalDateTime createdAt;

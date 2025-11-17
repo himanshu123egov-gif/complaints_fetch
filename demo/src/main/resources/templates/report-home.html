@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Complaint Search</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+
+</head>
+<body>
+
+<h2>Complaint Reports</h2>
+
+<div class="container">
+
+    <form action="/reports/complaint" method="get" class="box">
+        <h3>Search by Complaint Number</h3>
+        <input type="text" name="complaintNumber" placeholder="Enter Complaint Number" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <form action="/reports/table/{tableNo}" method="get" class="box"
+          onsubmit="this.action='/reports/table/' + document.getElementById('tableNo').value">
+        <h3>Search by Table No</h3>
+        <input type="number" id="tableNo" name="tableNo" placeholder="Enter Table No" required>
+        <button type="submit">Search</button>
+    </form>
+
+</div>
+
+</body>
+</html>
